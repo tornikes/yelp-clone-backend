@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn, Column, Unique } from "typeorm";
 import { v4 } from "uuid";
 
-@Entity()
+@Entity({ name: "users" })
 @Unique(["email"])
 export class User {
   @PrimaryColumn()
