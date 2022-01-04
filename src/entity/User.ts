@@ -1,11 +1,10 @@
-import { Entity, PrimaryColumn, Column, Unique } from "typeorm";
-import { v4 } from "uuid";
+import { Entity, Column, Unique, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: "users" })
 @Unique(["email"])
 export class User {
-  @PrimaryColumn()
-  id: string = v4();
+  @PrimaryGeneratedColumn("uuid")
+  id?: string;
 
   @Column({ type: "varchar", length: 100 })
   userName?: string;
