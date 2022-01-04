@@ -7,6 +7,8 @@ const app = express();
 async function start() {
   const conn = await createConnection();
 
+  await conn.runMigrations();
+
   const PORT = process.env.PORT || 5000;
 
   app.get("/", (req, res) => {
