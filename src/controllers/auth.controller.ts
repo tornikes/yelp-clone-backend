@@ -23,7 +23,6 @@ authRouter.post("/register", async (req, res) => {
 
 authRouter.post("/login", async (req, res) => {
   const em = getManager();
-  console.log(req.body);
 
   const user = await em.findOne(User, { email: req.body.email });
 
