@@ -1,16 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, Column } from "typeorm";
+import { v4 } from "uuid";
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id?: number;
+  @PrimaryColumn()
+  id: string = v4();
 
-  @Column()
-  firstName?: string;
+  @Column({ type: "varchar", length: 100 })
+  userName?: string;
 
-  @Column()
-  lastName?: string;
+  @Column({ type: "varchar", length: 100 })
+  email?: string;
 
-  @Column()
-  age?: number;
+  @Column({ type: "varchar", length: 100 })
+  passwordHash: string = "";
 }
