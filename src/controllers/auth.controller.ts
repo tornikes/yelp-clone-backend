@@ -9,12 +9,14 @@ authRouter.post("/register", async (req, res) => {
   const { body } = req;
 
   const user = em.create(User, body);
-  console.log("starting to hash");
+
+  const { passwordHash, ...copiedUser } = user;
 
   user.passwordHash = await bcrypt.hash(body.password, 10);
-  console.log(user);
 
-  res.send({ message: "gotcha" });
+  await em.save(user);
+
+  res.status(201).send({ user: copiedUser });
 });
 
 export default authRouter;
