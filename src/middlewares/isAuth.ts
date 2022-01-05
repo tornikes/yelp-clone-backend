@@ -20,3 +20,5 @@ const isAuth: RequestHandler = (req, res, next) => {
     res.status(401).send({ message: "Unauthorized" });
   }
 };
+
+export default isAuth;
