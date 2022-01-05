@@ -1,8 +1,10 @@
 import "reflect-metadata";
+import "express-async-errors";
 import { createConnection } from "typeorm";
 import express from "express";
 import cors from "cors";
 import authRouter from "./controllers/auth.controller";
+import errorHandler from "./middlewares/errorHandler";
 
 const app = express();
 
@@ -21,6 +23,8 @@ async function start() {
   });
 
   app.use("/api/auth", authRouter);
+
+  app.use(errorHandler);
 
   app.listen(PORT, () => {
     console.log(`Server launched at port ${PORT}`);

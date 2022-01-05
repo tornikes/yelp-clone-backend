@@ -3,6 +3,9 @@ import { getManager } from "typeorm";
 import { User } from "../entity/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { StatusCodes } from "http-status-codes";
+import { NotFoundError } from "../errors";
+import { UnauthorizedError } from "../errors";
 
 const authRouter = express.Router();
 
@@ -18,7 +21,7 @@ authRouter.post("/register", async (req, res) => {
 
   await em.save(user);
 
-  res.status(201).send({ user: copiedUser });
+  res.status(StatusCodes.CREATED).send({ user: copiedUser });
 });
 
 authRouter.post("/login", async (req, res) => {
@@ -27,12 +30,12 @@ authRouter.post("/login", async (req, res) => {
   const user = await em.findOne(User, { email: req.body.email });
 
   if (!user) {
-    return res.status(404).send({ message: "unknown user" });
+    throw new NotFoundError("No user found");
   }
 
   const isMatch = await bcrypt.compare(req.body.password, user.passwordHash);
   if (!isMatch) {
-    return res.send({ message: "Invalid credentials" });
+    throw new UnauthorizedError("Invalid credentials");
   }
 
   const userData = { id: user.id, name: user.userName };
