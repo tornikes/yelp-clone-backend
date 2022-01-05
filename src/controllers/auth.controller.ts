@@ -37,7 +37,7 @@ authRouter.post("/login", async (req, res) => {
 
   const userData = { id: user.id, name: user.userName };
 
-  const token = jwt.sign(userData, "SUPER_SECRET", {
+  const token = jwt.sign(userData, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
 
