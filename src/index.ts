@@ -1,10 +1,12 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import express from "express";
+import cors from "cors";
 import authRouter from "./controllers/auth.controller";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 async function start() {
