@@ -1,10 +1,11 @@
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
+import { UnauthorizedError } from "../errors";
 
 const isAuth: RequestHandler = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer")) {
-    return res.status(401).send({ message: "Uanthorized" });
+    throw new UnauthorizedError();
   }
 
   const token = authHeader.split(" ")[1];
@@ -17,7 +18,7 @@ const isAuth: RequestHandler = (req, res, next) => {
     }
     next();
   } catch (err) {
-    res.status(401).send({ message: "Unauthorized" });
+    throw new UnauthorizedError();
   }
 };
 
