@@ -5,6 +5,7 @@ import express from "express";
 import cors from "cors";
 import authRouter from "./controllers/auth.controller";
 import errorHandler from "./middlewares/errorHandler";
+import restaurantRouter from "./controllers/restaurant.controller";
 
 const app = express();
 
@@ -23,6 +24,7 @@ async function start() {
   });
 
   app.use("/api/auth", authRouter);
+  app.use("/api/restaurant", restaurantRouter);
 
   app.use(errorHandler);
 
