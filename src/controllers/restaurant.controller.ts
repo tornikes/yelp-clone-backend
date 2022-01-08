@@ -4,6 +4,7 @@ import Restaurant from "../entity/Restaurant";
 import { User } from "../entity/User";
 import { NotFoundError } from "../errors";
 import isAuth from "../middlewares/isAuth";
+import parsePageQuery from "../middlewares/parsePageQuery";
 
 const restaurantRouter = express.Router();
 
@@ -23,9 +24,24 @@ restaurantRouter.post("/", isAuth, async (req, res) => {
   res.send({ restaurant: rest });
 });
 
-restaurantRouter.get("/", async (req, res) => {
+restaurantRouter.get("/", parsePageQuery, async (req, res) => {
   const em = getManager();
-  const restaurants = await em.find(Restaurant, {});
+  const page = req.page || 1;
+  const pageSize = 9;
+
+  const restaurants = await em
+    .getRepository(Restaurant)
+    .createQueryBuilder()
+    .select([
+      "Restaurant.name as name, Restaurant.imageUrl, Restaurant.description",
+      "avg(Review.rating) as rating",
+    ])
+    .leftJoin("Restaurant.reviews", "Review")
+    .groupBy("Restaurant.id")
+    .skip((page - 1) * pageSize)
+    .take(pageSize)
+    .execute();
+
   res.send({ restaurants });
 });
 
