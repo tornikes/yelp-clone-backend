@@ -1,4 +1,12 @@
-import { Entity, Column, Unique, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  Unique,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from "typeorm";
+import Restaurant from "./Restaurant";
+import Review from "./Review";
 
 @Entity({ name: "users" })
 @Unique(["email"])
@@ -14,4 +22,10 @@ export class User {
 
   @Column({ type: "varchar", length: 100 })
   passwordHash: string = "";
+
+  @OneToMany(() => Restaurant, (restaurant) => restaurant.user)
+  restaurants!: Restaurant[];
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews!: Review[];
 }
