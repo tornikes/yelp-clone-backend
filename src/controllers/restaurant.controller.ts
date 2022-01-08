@@ -23,4 +23,10 @@ restaurantRouter.post("/", isAuth, async (req, res) => {
   res.send({ restaurant: rest });
 });
 
+restaurantRouter.get("/", async (req, res) => {
+  const em = getManager();
+  const restaurants = await em.find(Restaurant, {});
+  res.send({ restaurants });
+});
+
 export default restaurantRouter;
