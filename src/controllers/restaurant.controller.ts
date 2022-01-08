@@ -45,4 +45,10 @@ restaurantRouter.get("/", parsePageQuery, async (req, res) => {
   res.send({ restaurants });
 });
 
+restaurantRouter.get("/count", async (req, res) => {
+  const em = getManager();
+  const count = await em.count(Restaurant);
+  res.send({ count });
+});
+
 export default restaurantRouter;
