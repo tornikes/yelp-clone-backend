@@ -33,13 +33,13 @@ restaurantRouter.get("/", parsePageQuery, async (req, res) => {
     .getRepository(Restaurant)
     .createQueryBuilder()
     .select([
-      "Restaurant.name as name, Restaurant.imageUrl, Restaurant.description",
+      "Restaurant.id as id, Restaurant.name as name, Restaurant.imageUrl, Restaurant.description",
       "avg(Review.rating) as rating",
     ])
     .leftJoin("Restaurant.reviews", "Review")
     .groupBy("Restaurant.id")
-    .skip((page - 1) * pageSize)
-    .take(pageSize)
+    .offset((page - 1) * pageSize)
+    .limit(pageSize)
     .execute();
 
   res.send({ restaurants });
