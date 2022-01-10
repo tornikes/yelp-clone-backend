@@ -45,7 +45,7 @@ restaurantRouter.get("/", parsePageQuery, async (req, res) => {
   res.send({ restaurants });
 });
 
-restaurantRouter.get("/:id", async (req, res) => {
+restaurantRouter.get("/place/:id", async (req, res) => {
   const em = getManager();
   const { id } = req.params;
   console.log(id);
