@@ -45,6 +45,29 @@ restaurantRouter.get("/", parsePageQuery, async (req, res) => {
   res.send({ restaurants });
 });
 
+restaurantRouter.get("/:id", async (req, res) => {
+  const em = getManager();
+  const { id } = req.params;
+  console.log(id);
+
+  const restaurant = await em
+    .getRepository(Restaurant)
+    .createQueryBuilder()
+    .select([
+      "Restaurant.id as id, Restaurant.name as name, Restaurant.imageUrl, Restaurant.description, Restaurant.location, Restaurant.createdAt, Restaurant.lastRatedAt",
+      "avg(Review.rating) as rating, count(Review.rating) as ratingCount",
+    ])
+    .where("Restaurant.id = :id", { id })
+    .leftJoin("Restaurant.reviews", "Review")
+    .groupBy("Restaurant.id")
+    .execute();
+
+  if (restaurant.length === 0) {
+    throw new NotFoundError();
+  }
+  res.send({ restaurant: restaurant[0] });
+});
+
 restaurantRouter.get("/count", async (req, res) => {
   const em = getManager();
   const count = await em.count(Restaurant);
