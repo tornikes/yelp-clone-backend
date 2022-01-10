@@ -9,8 +9,8 @@ Steps to run this project:
 
 ## For the project to run the following environment variables must be defined
 
-DB_HOST
-DB_PORT
-DB_USER
-DB_PASSWORD
-JWT_SECRET
+- DB_HOST
+- DB_PORT
+- DB_USER
+- DB_PASSWORD
+- JWT_SECRET
