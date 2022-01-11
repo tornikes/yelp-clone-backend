@@ -78,6 +78,7 @@ restaurantRouter.get("/place/:id/reviews", parsePageQuery, async (req, res) => {
     where: { restaurant: id },
     skip: (page - 1) * pageSize,
     take: pageSize,
+    relations: ["user"],
   });
 
   res.send({ reviews });

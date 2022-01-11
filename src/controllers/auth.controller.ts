@@ -27,7 +27,13 @@ authRouter.post("/register", async (req, res) => {
 authRouter.post("/login", async (req, res) => {
   const em = getManager();
 
-  const user = await em.findOne(User, { email: req.body.email });
+  const user = await em.findOne(
+    User,
+    { email: req.body.email },
+    {
+      select: ["passwordHash", "id", "userName"],
+    }
+  );
 
   if (!user) {
     throw new NotFoundError("No user found");
