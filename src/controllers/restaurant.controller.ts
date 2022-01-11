@@ -89,7 +89,9 @@ restaurantRouter.get(
   parsePageQuery,
   async (req, res) => {
     const em = getManager();
-    const count = await em.count(Review);
+    const count = await em.count(Review, {
+      where: { restaurant: req.params.id },
+    });
     res.send({ count });
   }
 );
