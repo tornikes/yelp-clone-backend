@@ -1,16 +1,31 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  Entity,
+  Column,
+  Unique,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from "typeorm";
+import Restaurant from "./Restaurant";
+import Review from "./Review";
 
-@Entity()
+@Entity({ name: "users" })
+@Unique(["email"])
 export class User {
-  @PrimaryGeneratedColumn()
-  id?: number;
+  @PrimaryGeneratedColumn("uuid")
+  id?: string;
 
-  @Column()
-  firstName?: string;
+  @Column({ type: "varchar", length: 100 })
+  userName?: string;
 
-  @Column()
-  lastName?: string;
+  @Column({ type: "varchar", length: 100 })
+  email?: string;
 
-  @Column()
-  age?: number;
+  @Column({ type: "varchar", length: 100, select: false })
+  passwordHash: string = "";
+
+  @OneToMany(() => Restaurant, (restaurant) => restaurant.user)
+  restaurants!: Restaurant[];
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews!: Review[];
 }
