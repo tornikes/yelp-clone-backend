@@ -1,6 +1,7 @@
 import express from "express";
 import { getManager } from "typeorm";
 import Restaurant from "../entity/Restaurant";
+import Review from "../entity/Review";
 import { User } from "../entity/User";
 import { NotFoundError } from "../errors";
 import isAuth from "../middlewares/isAuth";
@@ -67,6 +68,33 @@ restaurantRouter.get("/place/:id", async (req, res) => {
   }
   res.send({ restaurant: restaurant[0] });
 });
+
+restaurantRouter.get("/place/:id/reviews", parsePageQuery, async (req, res) => {
+  const em = getManager();
+  const pageSize = 5;
+  const page = req.page || 1;
+  const { id } = req.params;
+  const reviews = await em.find(Review, {
+    where: { restaurant: id },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+    relations: ["user"],
+  });
+
+  res.send({ reviews });
+});
+
+restaurantRouter.get(
+  "/place/:id/reviews/count",
+  parsePageQuery,
+  async (req, res) => {
+    const em = getManager();
+    const count = await em.count(Review, {
+      where: { restaurant: req.params.id },
+    });
+    res.send({ count });
+  }
+);
 
 restaurantRouter.get("/count", async (req, res) => {
   const em = getManager();

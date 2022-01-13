@@ -20,7 +20,7 @@ export class User {
   @Column({ type: "varchar", length: 100 })
   email?: string;
 
-  @Column({ type: "varchar", length: 100 })
+  @Column({ type: "varchar", length: 100, select: false })
   passwordHash: string = "";
 
   @OneToMany(() => Restaurant, (restaurant) => restaurant.user)
